@@ -1,0 +1,79 @@
+<?php
+include '../../partials/header.php';
+include '../../partials/sidebar.php';
+include '../../partials/navbar.php';
+
+$qAbouts = "SELECT * FROM abouts";
+$result = mysqli_query($connect, $qAbouts) or die(mysqli_error($connect));
+?>
+
+<!--content about-->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5>Tabel Abouts</h5>
+                <a href="./create.php" class="btn btn-primary"><i class="bi bi-plus-lg"> Tambah Data</i></a>
+            </div>
+            <div class="card-body">
+                <div class="tabel-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Gambar</th>
+                                <th>Nama</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Deskripsi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            while ($item = $result->fetch_object()):
+                            ?>
+                                <tr class="text-capitalize">
+                                    <td><?= $no ?></td>
+                                    <td>
+                                        <img src="../../../storages/about/<?= $item->image ?>"
+                                            alt="Gambar" width="100px" height="100">
+                                    </td>
+                                    <td><?= $item->name ?></td>
+                                    <td><?= $item->born ?></td>
+                                    <td><?= $item->email ?></td>
+                                    <td><?= $item->phone ?></td>
+                                    <td><?= $item->description ?></td>
+                                    <td>
+                                        <div class="d-grid gap-2" style="min-width: 120px;">
+                                            <a href="./detail.php?id=<?= $item->id ?>" class="btn btn-success btn-sm">
+                                                <i class="bi bi-search"></i> Detail
+                                            </a>
+                                            <a href="./edit.php?id=<?= $item->id ?>" class="btn btn-warning btn-sm">
+                                                <i class="bi bi-pen-fill"></i> Edit
+                                            </a>
+                                            <a href="../../action/about/destroy.php?id=<?= $item->id ?>"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Apakah Anda Yakin?')">
+                                                <i class="bi bi-trash3-fill"></i> Hapus
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                                $no++;
+                            endwhile;
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+include '../../partials/footer.php';
+include '../../partials/script.php';
+?>
